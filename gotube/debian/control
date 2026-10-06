@@ -1,0 +1,13 @@
+Source: gotube
+Section: user/multimedia
+Priority: optional
+Maintainer: Community Developer <developer@gotube.local>
+Build-Depends: debhelper (>= 5), libqt4-dev (>= 4.7.4)
+Standards-Version: 3.8.3
+
+Package: gotube
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libqt4-declarative (>= 4.7.4), libqt4-network (>= 4.7.4), libqt4-gui (>= 4.7.4)
+Description: YouTube client for Nokia N9 MeeGo 1.2 Harmattan
+ GoTube is a lightweight, ad-free YouTube player featuring background audio playback
+ and offline MP4 video downloads.

@@ -1,0 +1,14 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Type=Application
+Terminal=false
+Name=GoTube
+Exec=/opt/gotube/bin/gotube
+Icon=gotube
+X-Window-Icon=
+X-HildonDesk-ShowInToolbar=true
+X-Osso-Type=application/x-executable
+X-MeeGo-Logical-Id=gotube
+Comment=Nokia N9 YouTube Client
+Categories=AudioVideo;Video;Player;
