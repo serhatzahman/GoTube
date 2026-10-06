@@ -66,14 +66,14 @@ Page {
                     color: "#FFFFFF"
                     font.pixelSize: 26
                     font.bold: true
-                    visible: !parent.children[0].source
+                    visible: (parent.children[0].source == "")
                 }
             }
 
             Column {
                 anchors.verticalCenter: parent.verticalCenter
                 spacing: 4
-                width: parent.width - 90
+                width: (parent.width - 90)
 
                 Text {
                     text: channelData ? channelData.author : initialAuthorName
@@ -87,7 +87,7 @@ Page {
 
                 Text {
                     text: {
-                        if (!channelData) return "";
+                        if (channelData == null) return "";
                         var subs = channelData.subCount ? channelData.subCount.toLocaleString() + " abone" : "";
                         var count = channelData.totalVideos ? " • " + channelData.totalVideos + " video" : "";
                         return subs + count;

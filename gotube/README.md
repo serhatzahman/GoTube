@@ -1,140 +1,105 @@
-# GoTube — Nokia N9 (MeeGo 1.2 Harmattan) YouTube Client
+# GoTube v2.0 — Nokia N9 (MeeGo 1.2 Harmattan) YouTube Client
 
 [English](#english) | [Türkçe](#türkçe)
 
+---
+
+<a name="english"></a>
 ## English
 
-GoTube is a native, hardware-accelerated YouTube client tailored specifically for the Nokia N9 running MeeGo 1.2 Harmattan. Built with Qt 4.7 and Qt Quick (QML 1.1), it provides an ad-free viewing experience powered by a lightweight local proxy bridge.
+GoTube v2.0 is a native, hardware-accelerated YouTube client crafted specifically for the Nokia N9 running MeeGo 1.2 Harmattan. Built with Qt 4.7 and Qt Quick (QML 1.1), it combines modern YouTube mobile UX with the classic MeeGo swipe design language.
 
-### Features
-
-* **AMOLED-Optimized Dark UI**: True black (`#000000`) theme preserving battery life on the N9's 480x854 AMOLED screen.
-
-* **Hardware-Accelerated Playback**: Leverages the TI OMAP3630 DSP/IVA2 hardware decoder via GStreamer for smooth 360p/720p H.264 playback.
-
-* **Smooth Seeking (HTTP Range)**: Multi-threaded streaming proxy supporting RFC 7233 byte-range requests for instantaneous seeking without stream stalling.
-
-* **Background Audio Mode ("Sadece Ses")**: Power-saving mode to stream audio only with display turned off.
-
-* **Offline Downloads**: Download videos directly to `/home/user/MyDocs/Videos/` for offline viewing.
-
-* **Native MeeGo Harmattan Icon**: 80x80 squircle icon matching the system Blanco theme guidelines.
+### What's New in v2.0
+- **Double-Tap Seeking (±10s)**: Double-tap on the left half of the video to rewind 10 seconds, or on the right half to fast-forward 10 seconds, complete with animated visual badges.
+- **Playback Speed Selector**: Adjust speed between `0.75x`, `1.0x`, `1.25x`, `1.5x`, and `2.0x` dynamically using hardware DSP clocking.
+- **Quality Switcher (360p / 720p HD)**: Switch seamlessly between battery-efficient 360p and high-definition 720p streams while preserving playback position.
+- **Trending Categories**: Browse curated feeds for Music, Gaming, News, and General Trending videos via one-touch filter chips.
+- **Up Next & Related Videos**: Discover related content right below the player and switch videos with a single tap.
+- **Channel Explorer**: Tap any channel name to view channel details and recent uploads in `ChannelPage`.
+- **Integrated Offline Downloads**: Download MP4 videos directly to `/home/user/MyDocs/Videos/` for offline playback in the built-in `DownloadsPage` or native Gallery.
+- **Multi-Threaded HTTP Range Streaming**: RFC 7233 byte-range server bridge ensuring smooth, instant scrubbing without connection stalling.
 
 ### Architecture
-
-* **N9 Native App (`gotube/`)**: Qt 4.7 / C++ core network manager interfacing with QtQuick 1.1 UI components and GStreamer multimedia pipelines.
-
-* **Streaming Bridge (`server/server.py`)**: Multi-threaded Python proxy on PC/WSL that bridges modern TLS 1.3 requirements, prevents 403 blocks via `yt-dlp`, and serves HTTP Range streams to the N9.
+- **N9 Native App (`gotube/`)**: Qt 4.7 / C++ core network manager interfacing with QtQuick 1.1 UI components and GStreamer multimedia pipelines.
+- **Streaming Bridge v2 (`server/server.py`)**: Multi-threaded Python server on PC/WSL that bridges modern TLS 1.3 requirements, prevents 403 blocks via `yt-dlp`, and serves HTTP Range streams and REST APIs to the N9.
 
 ### Getting Started
 
 #### 1. Setup Streaming Proxy (PC / WSL)
-
 1. Install Python 3 and `yt-dlp`:
-
-   ```
+   ```bash
    pip install yt-dlp
-   
    ```
-
 2. Start the proxy server:
-
-   ```
+   ```bash
    python3 server/server.py
-   
    ```
-
    *(Ensure PC and Nokia N9 are connected to the same local Wi-Fi network).*
 
 #### 2. Running on Nokia N9
-
 Copy the `gotube` files to the phone or install the Debian package:
-
-```
+```bash
 # Run directly from terminal or launch from application grid
 gotube
-
 ```
 
 ### Building from Source (Harmattan SDK)
-
 Inside the Harmattan Scratchbox / Docker build environment:
-
-```
+```bash
 cd gotube
 qmake
 make
 dpkg-buildpackage -rfakeroot -uc -us -b
-
 ```
 
+---
+
+<a name="türkçe"></a>
 ## Türkçe
 
-GoTube, MeeGo 1.2 Harmattan işletim sistemli Nokia N9 için özel olarak geliştirilmiş, donanım hızlandırmalı ve modern özelliklere sahip yerel bir YouTube istemcisidir. Saf Qt 4.7 ve Qt Quick (QML 1.1) mimarisi üzerine inşa edilmiştir.
+GoTube v2.0, MeeGo 1.2 Harmattan işletim sistemli Nokia N9 için özel olarak geliştirilmiş, donanım hızlandırmalı ve modern mobil YouTube deneyimini N9'un AMOLED ekranına taşıyan yerel istemcidir. Saf Qt 4.7 ve Qt Quick (QML 1.1) mimarisi üzerine kuruludur.
 
-### Özellikler
-
-* **AMOLED Uyumlu Koyu Tema**: Nokia N9'un 480x854 AMOLED ekranında pil tüketimini en aza indiren saf siyah (`#000000`) arayüz.
-
-* **Donanım Hızlandırmalı Oynatma**: TI OMAP3630 DSP/IVA2 yongası ve GStreamer altyapısıyla akıcı H.264 (360p / 720p) video deneyimi.
-
-* **Kesintisiz İleri/Geri Sarma (HTTP Range)**: RFC 7233 kısmi içerik (206 Partial Content) destekli çok iş parçacıklı proxy mimarisiyle takılmadan anında sarma.
-
-* **Sadece Ses Modu (Arka Planda Dinleme)**: Ekran kapalıyken veya pil tasarrufu için yalnızca ses akışını dinleyebilme.
-
-* **Yerel İndirme (Çevrimdışı MP4)**: Videoları doğrudan `/home/user/MyDocs/Videos/` dizinine MP4 olarak kaydetme.
-
-* **Özel MeeGo Squircle İkonu**: Blanco sistem teması tasarım rehberine tam uyumlu 80x80 vektörel uygulama simgesi.
+### v2.0 ile Gelen Yenilikler
+- **Çift Dokunma ile ±10 Saniye Atlama**: Ekranın sol yarısına çift dokunarak 10 saniye geri, sağ yarısına çift dokunarak 10 saniye ileri sarma (animasyonlu rozet gösterimi ile).
+- **Oynatma Hızı Ayarı**: `0.75x`, `1.0x`, `1.25x`, `1.5x` ve `2.0x` hız seçenekleri arasında tek dokunuşla geçiş.
+- **360p / 720p HD Kalite Seçimi**: Pil dostu 360p ile kristal netliğindeki 720p HD akış arasında oynatma konumunu kaybetmeden geçiş yapabilme.
+- **Trend Kategori Sekmeleri**: Ana ekranda Müzik, Oyun, Haberler ve Tümü filtre çipleriyle kategorilere göre video keşfi.
+- **Sıradaki ve İlgili Videolar**: Oynatıcının altında mevcut videoyla ilişkili önerilen videoları listeleme ve tek tıkla yeni videoya geçebilme.
+- **Kanal Detay Sayfası**: Video altındaki kanal adına dokunarak kanalın videolarını listeleme.
+- **Entegre Çevrimdışı İndirme**: Videoları tek dokunuşla `/home/user/MyDocs/Videos/` dizinine MP4 olarak kaydetme ve `DownloadsPage` üzerinden internetsiz izleme.
+- **Çok İş Parçacıklı HTTP Range Akışı**: RFC 7233 kısmi içerik destekli proxy ile takılmadan kesintisiz sarma.
 
 ### Mimari
-
-* **N9 Yerel İstemci (`gotube/`)**: Qt 4.7 / C++ ağ katmanı, QtQuick 1.1 arayüz bileşenleri ve GStreamer video motoru.
-
-* **Akış Köprüsü (`server/server.py`)**: N9'un TLS 1.0 kısıtlamasını aşan, Invidious/yt-dlp üzerinden 403 engelini çözen ve HTTP Range desteği sunan PC/WSL sunucusu.
+- **N9 Yerel İstemci (`gotube/`)**: Qt 4.7 / C++ ağ katmanı, QtQuick 1.1 arayüz bileşenleri ve GStreamer video motoru.
+- **Akış Köprüsü v2 (`server/server.py`)**: N9'un TLS 1.0 kısıtlamasını aşan, Invidious/yt-dlp üzerinden 403 engelini çözen ve HTTP Range desteği sunan PC/WSL sunucusu.
 
 ### Kurulum ve Kullanım
 
 #### 1. Akış Sunucusunu Başlatma (PC / WSL)
-
 1. Python 3 ve `yt-dlp` paketini kurun:
-
-   ```
+   ```bash
    pip install yt-dlp
-   
    ```
-
 2. Sunucuyu başlatın:
-
-   ```
+   ```bash
    python3 server/server.py
-   
    ```
-
    *(Bilgisayar ve Nokia N9'un aynı yerel Wi-Fi ağına bağlı olduğundan emin olun).*
 
 #### 2. Nokia N9 Üzerinde Çalıştırma
-
-Uygulama dosyalarını cihaza aktardıktan sonra uygulama menüsünden simgeye dokunarak veya terminalden:
-
-```
+```bash
 gotube
-
 ```
-
-komutuyla başlatabilirsiniz.
 
 ### Kaynak Koddan Derleme (Harmattan SDK)
-
-Harmattan Scratchbox veya Docker ortamında:
-
-```
+```bash
 cd gotube
 qmake
 make
 dpkg-buildpackage -rfakeroot -uc -us -b
-
 ```
 
-### Lisans / License
+---
 
+### Lisans / License
 MIT License

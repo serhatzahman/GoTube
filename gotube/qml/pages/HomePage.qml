@@ -7,9 +7,10 @@ Page {
     tools: commonTools
 
     property variant videos: []
+    property string currentCategory: "music"
 
     Component.onCompleted: {
-        youtubeClient.fetchTrending();
+        switchCategory("music");
     }
 
     Connections {
@@ -20,7 +21,29 @@ Page {
         }
     }
 
-    // Top Header Bar
+    function switchCategory(cat) {
+        currentCategory = cat;
+        categoryIndicator.running = true;
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                categoryIndicator.running = false;
+                if (xhr.status === 200) {
+                    try {
+                        var data = JSON.parse(xhr.responseText);
+                        homePage.videos = data;
+                        videoList.model = data;
+                    } catch (e) {
+                        console.log("Category parse hatasi:", e);
+                    }
+                }
+            }
+        };
+        xhr.open("GET", "http://192.168.8.137:8888/api/v1/trending?type=" + cat);
+        xhr.send();
+    }
+
+    // Ust Header
     Rectangle {
         id: headerBar
         anchors.top: parent.top
@@ -39,7 +62,7 @@ Page {
                 width: 28
                 height: 20
                 radius: 4
-                color: "#E50914" // Accent Red
+                color: "#E50914"
                 anchors.verticalCenter: parent.verticalCenter
 
                 Text {
@@ -64,7 +87,7 @@ Page {
                 color: "#888888"
                 font.pixelSize: 18
                 font.family: "Nokia Pure Text"
-                anchors.verticalCenter: parent.verticalCenter
+                font.verticalCenter: parent.verticalCenter
             }
         }
 
@@ -73,7 +96,9 @@ Page {
             anchors.rightMargin: 8
             anchors.verticalCenter: parent.verticalCenter
             iconId: "toolbar-refresh"
-            onClicked: youtubeClient.fetchTrending()
+            onClicked: {
+                switchCategory(currentCategory);
+            }
         }
 
         Rectangle {
@@ -85,10 +110,129 @@ Page {
         }
     }
 
+    // Kategori Filtre Cubugu (Muzik, Oyun, Haberler, Tumu)
+    Rectangle {
+        id: categoryBar
+        anchors.top: headerBar.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        height: 48
+        color: "#050505"
+
+        Row {
+            anchors.centerIn: parent
+            spacing: 8
+
+            // Muzik
+            Rectangle {
+                width: 78
+                height: 32
+                radius: 16
+                color: (currentCategory == "music" ? "#E50914" : "#1C1C1C")
+                border.color: (currentCategory == "music" ? "#E50914" : "#333333")
+                border.width: 1
+
+                Text {
+                    anchors.centerIn: parent
+                    text: "Müzik"
+                    color: "#FFFFFF"
+                    font.pixelSize: 13
+                    font.bold: true
+                    font.family: "Nokia Pure Text"
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: switchCategory("music")
+                }
+            }
+
+            // Oyun
+            Rectangle {
+                width: 78
+                height: 32
+                radius: 16
+                color: (currentCategory == "gaming" ? "#E50914" : "#1C1C1C")
+                border.color: (currentCategory == "gaming" ? "#E50914" : "#333333")
+                border.width: 1
+
+                Text {
+                    anchors.centerIn: parent
+                    text: "Oyun"
+                    color: "#FFFFFF"
+                    font.pixelSize: 13
+                    font.bold: true
+                    font.family: "Nokia Pure Text"
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: switchCategory("gaming")
+                }
+            }
+
+            // Haberler
+            Rectangle {
+                width: 84
+                height: 32
+                radius: 16
+                color: (currentCategory == "news" ? "#E50914" : "#1C1C1C")
+                border.color: (currentCategory == "news" ? "#E50914" : "#333333")
+                border.width: 1
+
+                Text {
+                    anchors.centerIn: parent
+                    text: "Haberler"
+                    color: "#FFFFFF"
+                    font.pixelSize: 13
+                    font.bold: true
+                    font.family: "Nokia Pure Text"
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: switchCategory("news")
+                }
+            }
+
+            // Tumu
+            Rectangle {
+                width: 76
+                height: 32
+                radius: 16
+                color: (currentCategory == "all" ? "#E50914" : "#1C1C1C")
+                border.color: (currentCategory == "all" ? "#E50914" : "#333333")
+                border.width: 1
+
+                Text {
+                    anchors.centerIn: parent
+                    text: "Tümü"
+                    color: "#FFFFFF"
+                    font.pixelSize: 13
+                    font.bold: true
+                    font.family: "Nokia Pure Text"
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: switchCategory("all")
+                }
+            }
+        }
+
+        Rectangle {
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            height: 1
+            color: "#181818"
+        }
+    }
+
     // Video Feed
     ListView {
         id: videoList
-        anchors.top: headerBar.bottom
+        anchors.top: categoryBar.bottom
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
@@ -106,21 +250,22 @@ Page {
         }
     }
 
-    // Loading indicator
+    // Yukleniyor Spinner
     BusyIndicator {
+        id: categoryIndicator
         anchors.centerIn: parent
-        running: youtubeClient.isLoading && videoList.count === 0
+        running: (homePage.videos.length === 0)
         visible: running
         platformStyle: BusyIndicatorStyle { size: "large" }
     }
 
-    // Empty state message
+    // Bos Durum Mesaji
     Text {
         anchors.centerIn: parent
-        text: "Video bulunamadı.\nBağlantınızı kontrol edin veya yenileyin."
+        text: "Video bulunamadi.\nBaglantinizi kontrol edin veya yenileyin."
         color: "#666666"
         font.pixelSize: 16
         horizontalAlignment: Text.AlignHCenter
-        visible: !youtubeClient.isLoading && videoList.count === 0
+        visible: (homePage.videos.length === 0 && categoryIndicator.running == false)
     }
 }

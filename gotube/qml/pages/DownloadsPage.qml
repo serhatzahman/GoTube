@@ -87,7 +87,7 @@ Page {
 
                 Text {
                     anchors.centerIn: parent
-                    text: "🎬"
+                    text: "▶"
                     font.pixelSize: 22
                 }
             }
