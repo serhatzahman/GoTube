@@ -22,6 +22,11 @@ GoTube v2.0 is a native, hardware-accelerated YouTube client crafted specificall
 ### Architecture
 - **N9 Native App (`gotube/`)**: Qt 4.7 / C++ core network manager interfacing with QtQuick 1.1 UI components and GStreamer multimedia pipelines.
 - **Streaming Bridge v2 (`server/server.py`)**: Multi-threaded Python server on PC/WSL that bridges modern TLS 1.3 requirements, prevents 403 blocks via `yt-dlp`, and serves HTTP Range streams and REST APIs to the N9.
+<img width="480" height="854" alt="Screenshot_20261009_090250" src="https://github.com/user-attachments/assets/8db1d4ba-a51e-4397-9199-2822f0c0f4e2" />
+<img width="480" height="854" alt="Screenshot_20261009_090244" src="https://github.com/user-attachments/assets/a989a854-544e-4459-a93d-863fe339aa50" />
+<img width="854" height="480" alt="SILVER_2026-09-27_21-00-38" src="https://github.com/user-attachments/assets/a366d97c-6a4f-413e-b957-7c70ecbd3c89" />
+<img width="854" height="480" alt="Screenshot_20261009_091552" src="https://github.com/user-attachments/assets/6773c5cb-1454-41ff-8fe6-19226dc7a7e4" />
+<img width="480" height="854" alt="Screenshot_20261009_091508" src="https://github.com/user-attachments/assets/2a1cdd0e-a47c-4b1f-9b9f-b05709bebf79" />
 
 ### Getting Started
 
